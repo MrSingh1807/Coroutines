@@ -27,20 +27,11 @@ class MainActivity : AppCompatActivity() {
     suspend fun doTask() {
         // Sequential Execution    ( Sequence  -->  2, 3 ,1 )
 
-        val job2 = CoroutineScope(Dispatchers.IO).launch {
-            task(2)
-        }
-        job2.join()
+       CoroutineScope(Dispatchers.IO).launch { task(2) }.join()
 
-        val job3 = CoroutineScope(Dispatchers.IO).launch {
-            task(3)
-        }
-        job3.join()
+       CoroutineScope(Dispatchers.IO).launch { task(3) }.join()
 
-        val job1 = CoroutineScope(Dispatchers.IO).launch {
-            task(1)
-        }
-        job1.join()
+       CoroutineScope(Dispatchers.IO).launch { task(1) }.join()
     }
 
     private suspend fun task(number: Int) {
