@@ -24,23 +24,49 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    suspend fun doTask() {
+    private suspend fun doTask() {
         // Sequential Execution    ( Sequence  -->  2, 3 ,1 )
 
-        val job2 = CoroutineScope(Dispatchers.IO).launch {
+        /*   CoroutinesScope --> LifeTime Of A Coroutines
+            Coroutines Context --> Execute coroutines in Thread or ThreadPools
+         */
+
+        /* Coroutine Builders -->
+         launch - "Fire or Forget" , return a job type Object
+         async - wait for result, return a Deferred type Object
+         */
+        CoroutineScope(Dispatchers.IO).launch {
+            // Parent Child RelationShip
+
+            /*  **** Children ****  */
+            val job2 = async { task(2) }
+            job2.await()
+            val job3 = async { task(3) }
+            job3.await()
+            val job1 = async { task(1) }
+            job1.await()
+
+        }
+
+
+        /*
+        val job2 =  CoroutineScope(Dispatchers.IO).async {
             task(2)
         }
-        job2.join()
+        job2.await()
 
-        val job3 = CoroutineScope(Dispatchers.IO).launch {
+        val job3 =  CoroutineScope(Dispatchers.IO).async {
             task(3)
         }
-        job3.join()
+        job3.await()
 
-        val job1 = CoroutineScope(Dispatchers.IO).launch {
+        val job1 =  CoroutineScope(Dispatchers.IO).async {
             task(1)
         }
-        job1.join()
+        job1.await()
+         */
+
+
     }
 
     private suspend fun task(number: Int) {
