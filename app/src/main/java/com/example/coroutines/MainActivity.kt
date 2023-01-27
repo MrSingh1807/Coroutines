@@ -18,7 +18,12 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         binding.executeTaskBTN.setOnClickListener {
-            GlobalScope.launch{
+
+            /*   CoroutinesScope --> LifeTime Of A Coroutines
+                Coroutines Context --> Execute coroutines in Thread or ThreadPools
+            */
+
+            GlobalScope.launch {
                 doTask()
             }
         }
@@ -27,9 +32,6 @@ class MainActivity : AppCompatActivity() {
     private suspend fun doTask() {
         // Sequential Execution    ( Sequence  -->  2, 3 ,1 )
 
-        /*   CoroutinesScope --> LifeTime Of A Coroutines
-            Coroutines Context --> Execute coroutines in Thread or ThreadPools
-         */
 
         /* Coroutine Builders -->
          launch - "Fire or Forget" , return a job type Object
@@ -38,33 +40,27 @@ class MainActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             // Parent Child RelationShip
 
+            Log.d(TAG, "Parent -> Started")
+            Log.d(TAG, Thread.currentThread().name)
+
+
             /*  **** Children ****  */
-            val job2 = async { task(2) }
-            job2.await()
-            val job3 = async { task(3) }
-            job3.await()
-            val job1 = async { task(1) }
-            job1.await()
+            launch { task(1) }.join()
+            launch { task(2) }
+            // Scenario Case --> Task - 2 will not start until Task- 1 is complete
 
+
+            Log.d(TAG, "Parent -> Ended")
         }
-
 
         /*
-        val job2 =  CoroutineScope(Dispatchers.IO).async {
-            task(2)
-        }
-        job2.await()
-
-        val job3 =  CoroutineScope(Dispatchers.IO).async {
-            task(3)
-        }
-        job3.await()
-
-        val job1 =  CoroutineScope(Dispatchers.IO).async {
-            task(1)
-        }
-        job1.await()
+        if condition - task 3 will not start until parent complete, than use {.join()} function
          */
+
+        coroutineScope { task(3) }      // Task - 3, is not bound
+
+        delay(5000)
+        Log.d(TAG, "Parent -> Completed")
 
 
     }
@@ -74,6 +70,7 @@ class MainActivity : AppCompatActivity() {
         delay(1000)
         Log.d(TAG, "Task - $number -> Ended")
     }
+
 
 }
 
