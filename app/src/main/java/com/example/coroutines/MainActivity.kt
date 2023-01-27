@@ -41,14 +41,11 @@ class MainActivity : AppCompatActivity() {
             // Parent Child RelationShip
 
             Log.d(TAG, "Parent -> Started")
-            Log.d(TAG, Thread.currentThread().name)
-
 
             /*  **** Children ****  */
             launch { task(1) }.join()
             launch { task(2) }
             // Scenario Case --> Task - 2 will not start until Task- 1 is complete
-
 
             Log.d(TAG, "Parent -> Ended")
         }
@@ -61,7 +58,6 @@ class MainActivity : AppCompatActivity() {
 
         delay(5000)
         Log.d(TAG, "Parent -> Completed")
-
 
     }
 
@@ -76,10 +72,26 @@ class MainActivity : AppCompatActivity() {
 
 
 /*    LogCat --> Result
-MyTag                   com.example.coroutines               D  Task - 2 -> Started
-MyTag                   com.example.coroutines               D  Task - 2 -> Ended
-MyTag                   com.example.coroutines               D  Task - 3 -> Started
-MyTag                   com.example.coroutines               D  Task - 3 -> Ended
-MyTag                   com.example.coroutines               D  Task - 1 -> Started
-MyTag                   com.example.coroutines               D  Task - 1 -> Ended
+ MyTag                   com.example.coroutines               D  Parent -> Started
+ MyTag                   com.example.coroutines               D  Task - 3 -> Started
+ MyTag                   com.example.coroutines               D  Task - 1 -> Started
+ MyTag                   com.example.coroutines               D  Task - 3 -> Ended
+ MyTag                   com.example.coroutines               D  Task - 1 -> Ended
+ MyTag                   com.example.coroutines               D  Parent -> Ended
+ MyTag                   com.example.coroutines               D  Task - 2 -> Started
+ MyTag                   com.example.coroutines               D  Task - 2 -> Ended
+ MyTag                   com.example.coroutines               D  Parent -> Completed
+
+ */
+
+/*    LogCat --> Result  {if task -3, is dependent to parent task}
+ MyTag                   com.example.coroutines               D  Parent -> Started
+ MyTag                   com.example.coroutines               D  Task - 1 -> Started
+ MyTag                   com.example.coroutines               D  Task - 1 -> Ended
+ MyTag                   com.example.coroutines               D  Parent -> Ended
+ MyTag                   com.example.coroutines               D  Task - 2 -> Started
+ MyTag                   com.example.coroutines               D  Task - 2 -> Ended
+ MyTag                   com.example.coroutines               D  Task - 3 -> Started
+ MyTag                   com.example.coroutines               D  Task - 3 -> Ended
+ MyTag                   com.example.coroutines               D  Parent -> Completed
  */
