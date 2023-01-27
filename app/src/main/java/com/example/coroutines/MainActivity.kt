@@ -49,7 +49,9 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        /*
+  //  --> Your Suitability
+         /*               or
+        
         val job2 =  CoroutineScope(Dispatchers.IO).async {
             task(2)
         }
@@ -66,6 +68,20 @@ class MainActivity : AppCompatActivity() {
         job1.await()
          */
 
+         
+  //          or
+
+         /* 
+         CoroutineScope(Dispatchers.IO).launch {
+            // Parent Child RelationShip
+            
+            task(2)
+             task(3)
+              task(1)
+              }
+            
+         */
+         
 
     }
 
